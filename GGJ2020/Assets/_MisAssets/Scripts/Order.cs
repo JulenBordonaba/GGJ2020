@@ -17,5 +17,11 @@ public class Order : MonoBehaviour
         GameManager.current.population += populationChange;
         GameManager.current.resources += resourcesChange;
         GameManager.current.locura += locuraChange;
+        GameManager.current.ordersToNewspaper -= 1;
+        if(GameManager.current.ordersToNewspaper<=0)
+        {
+            GameManager.current.ThrowEvent();
+            GameManager.current.ordersToNewspaper = Random.Range(2, 4);
+        }
     }
 }

@@ -19,7 +19,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Pon valores positivos para restar")]
     public float debufDrogar = 10;
     public float bajadaLocura = 3f;
+    public Event[] events;
 
+    public float locuraDrogar = 50;
+    public float locuraTrabajosForzados = 30;
 
 
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI resourceGrowthText;
     public TextMeshProUGUI populationGrowthText;
     public TextMeshProUGUI locuraText;
+    public TextMeshProUGUI eventText;
 
     public GameObject gameOverObject;
     public Toggle drogarToggle, trabajosForzadosToggle;
@@ -38,6 +42,8 @@ public class GameManager : MonoBehaviour
     public bool trabajosForzados = false;
     public bool drogar = false;
     private float tiempoRelajados = 0;
+
+    public int ordersToNewspaper = 0;
 
 
     private void Awake()
@@ -55,6 +61,7 @@ public class GameManager : MonoBehaviour
         resources = Random.Range(30, 70);
         happiness = 3;
         StartCoroutine(HappinessGrowCoroutine());
+        ordersToNewspaper = Random.Range(2, 4);
 
     }
 
@@ -108,12 +115,28 @@ public class GameManager : MonoBehaviour
     {
         drogar = drogarToggle.isOn;
         happiness = 5;
+        locura += locuraDrogar;
+
+        GameManager.current.ordersToNewspaper -= 1;
+        if (GameManager.current.ordersToNewspaper <= 0)
+        {
+            GameManager.current.ThrowEvent();
+            GameManager.current.ordersToNewspaper = Random.Range(2, 4);
+        }
     }
 
     public void ChangeTrabajosForzados()
     {
         trabajosForzados = trabajosForzadosToggle.isOn;
         happiness -= 1;
+        locura += locuraTrabajosForzados;
+
+        GameManager.current.ordersToNewspaper -= 1;
+        if (GameManager.current.ordersToNewspaper <= 0)
+        {
+            GameManager.current.ThrowEvent();
+            GameManager.current.ordersToNewspaper = Random.Range(2, 4);
+        }
     }
 
 
@@ -129,6 +152,13 @@ public class GameManager : MonoBehaviour
         resources += ResourceGrow * Time.deltaTime;
         resources -= ResourceConsumption * Time.deltaTime;
 
+    }
+
+
+    public void ThrowEvent()
+    {
+        eventText.transform.parent.gameObject.SetActive(true);
+        eventText.text = events[Random.Range(0, events.Length)].text;
     }
 
     public void ShowTexts()
