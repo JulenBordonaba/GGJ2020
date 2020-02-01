@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     public float locuraDrogar = 50;
     public float locuraTrabajosForzados = 30;
+    public Sprite[] eventSprites;
 
 
 
