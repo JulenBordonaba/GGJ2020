@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public float locuraDrogar = 50;
     public float locuraTrabajosForzados = 30;
     public Sprite[] eventSprites;
+    public Image eventImage;
 
 
 
@@ -160,6 +161,7 @@ public class GameManager : MonoBehaviour
     {
         eventText.transform.parent.gameObject.SetActive(true);
         eventText.text = events[Random.Range(0, events.Length)].text;
+        eventImage.sprite = eventSprites[Random.Range(0, eventSprites.Length)];
     }
 
     public void ShowTexts()
